@@ -14,13 +14,10 @@ cd "$GITHUB_WORKSPACE" || {
 # Put critical files and folders here
 need_integrity=(
 	"mainfiles/system/bin"
-	"mainfiles/libs"
 	"mainfiles/META-INF"
 	"mainfiles/service.sh"
 	"mainfiles/uninstall.sh"
 	"mainfiles/module.prop"
-    "mainfiles/AZenith_icon.png"
-	"mainfiles/gamelist.txt"
     "mainfiles/toast.apk"
 )
 
@@ -28,23 +25,22 @@ need_integrity=(
 version="$(cat version)"
 version_code="$(git rev-list HEAD --count)"
 release_code="$(git rev-parse --short HEAD)-Release"
-sed -i "s/version=.*/version=$version ($release_code)/" mainfiles/module.prop
-sed -i "s/versionCode=.*/versionCode=$version_code/" mainfiles/module.prop
+sed -i "s/version=.*/version=$version ($release_code)/" modules/module.prop
+sed -i "s/versionCode=.*/versionCode=$version_code/" modules/module.prop
 
 # Compile Gamelist
-paste -sd '|' - <"$GITHUB_WORKSPACE/gamelist.txt" >"$GITHUB_WORKSPACE/mainfiles/gamelist.txt"
+paste -sd '|' - <"$GITHUB_WORKSPACE/gamelist.txt" >"$GITHUB_WORKSPACE/modules/gamelist.txt"
 
 # Copy module files
-cp -r ./libs mainfiles
-cp -r ./tweakfls/* mainfiles/system/bin
-cp -r ./preloadbin/* mainfiles/system/bin
-cp LICENSE ./mainfiles
+cp -r ./script/* modules/system/bin
+cp -r ./preloadbin/* modules/system/bin
+cp LICENSE ./modules
 
 # Remove .sh extension from scripts
-find mainfiles/system/bin -maxdepth 1 -type f -name "*.sh" -exec sh -c 'mv -- "$0" "${0%.sh}"' {} \;
+find modules/system/bin -maxdepth 1 -type f -name "*.sh" -exec sh -c 'mv -- "$0" "${0%.sh}"' {} \;
 
 # Parse version info to module prop
-zipName="AZenith-Tweaks-$version-$release_code"
+zipName="Konyaku-Tweaks-$version-$release_code"
 echo "zipName=$zipName" >>"$GITHUB_OUTPUT"
 
 # Generate sha256sum for integrity checkup
@@ -53,8 +49,8 @@ for file in "${need_integrity[@]}"; do
 done
 
 # Zip the file
-cd ./mainfiles || {
-	echo "Unable to cd to ./mainfiles" >&2
+cd ./modules || {
+	echo "Unable to cd to ./modules" >&2
 	exit 1
 }
 
