@@ -262,7 +262,7 @@ blockquote,body,dd,dl,fieldset,figure,h1,h2,h3,h4,h5,h6,hr,menu,ol,p,pre,ul {
     height:100%;
     object-fit:cover;
     object-position:center;
-    filter:blur(4px);
+    filter:blur(10px);
     display:block;
     border:2px solid rgba(255,255,255,.05);
     border-radius:1rem;

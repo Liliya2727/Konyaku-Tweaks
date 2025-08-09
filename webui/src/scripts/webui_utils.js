@@ -1,54 +1,33 @@
-function e(c) {
-    return c && c.__esModule ? c.default : c;
-}
-var t = globalThis,
-    n = {},
-    a = {},
-    o = t.parcelRequirefbde;
-null == o &&
-    (((o = function (c) {
-        if (c in n) return n[c].exports;
-        if (c in a) {
-            var s = a[c];
-            delete a[c];
-            var r = { id: c, exports: {} };
-            return (n[c] = r), s.call(r.exports, r, r.exports), r.exports;
-        }
-        var d = Error("Cannot find module '" + c + "'");
-        throw ((d.code = "MODULE_NOT_FOUND"), d);
-    }).register = function (c, s) {
-        a[c] = s;
-    }),
-    (t.parcelRequirefbde = o)),
-    (0, o.register)("27Lyk", function (c, s) {
-        Object.defineProperty(c.exports, "register", { get: () => r, set: (c) => (r = c), enumerable: !0, configurable: !0 });
-        var r,
-            d = new Map();
-        r = function (c, s) {
-            for (var r = 0; r < s.length - 1; r += 2) d.set(s[r], { baseUrl: c, path: s[r + 1] });
-        };
-    }),
-    o("27Lyk").register(new URL("", import.meta.url).toString(), JSON.parse('["gvBVN","fn762ag.js","jkrgM","48MX7"]'));
-let i = 0;
-function executeCommand(c, s) {
-    return (
-        void 0 === s && (s = {}),
-        new Promise((r, d) => {
-            let l = `exec_callback_${Date.now()}_${i++}`;
-            function h(c) {
-                delete window[c];
-            }
-            window[l] = (c, s, d) => {
-                r({ errno: c, stdout: s, stderr: d }), h(l);
-            };
-            try {
-                ksu.exec(c, JSON.stringify(s), l);
-            } catch (m) {
-                d(m), h(l);
-            }
-        })
-    );
-}
+/*
+ * Copyright (C) 2024-2025 Zexshia
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import BannerZenith from "/EncoreBanner.avif";
+import AvatarZenith from "/Avatar.avif";
+import SchemeBanner from "/SchemeBanner.avif";
+import { exec, toast } from "kernelsu";
+
+const executeCommand = async (cmd, cwd = null) => {
+  try {
+    const { errno, stdout, stderr } = await exec(cmd, cwd ? { cwd } : {});
+    return { errno, stdout, stderr };
+  } catch (e) {
+    return { errno: -1, stdout: "", stderr: e.message || String(e) };
+  }
+};
+
 function EventEmitter() {
     this.listeners = {};
 }

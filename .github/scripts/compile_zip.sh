@@ -13,12 +13,12 @@ cd "$GITHUB_WORKSPACE" || {
 
 # Put critical files and folders here
 need_integrity=(
-	"mainfiles/system/bin"
-	"mainfiles/META-INF"
-	"mainfiles/service.sh"
-	"mainfiles/uninstall.sh"
-	"mainfiles/module.prop"
-    "mainfiles/toast.apk"
+	"modules/system/bin"
+	"modules/META-INF"
+	"modules/service.sh"
+	"modules/uninstall.sh"
+	"modules/module.prop"
+    "modules/toast.apk"
 )
 
 # Version info
@@ -28,8 +28,6 @@ release_code="$(git rev-parse --short HEAD)-Release"
 sed -i "s/version=.*/version=$version ($release_code)/" modules/module.prop
 sed -i "s/versionCode=.*/versionCode=$version_code/" modules/module.prop
 
-# Compile Gamelist
-paste -sd '|' - <"$GITHUB_WORKSPACE/gamelist.txt" >"$GITHUB_WORKSPACE/modules/gamelist.txt"
 
 # Copy module files
 cp -r ./script/* modules/system/bin
