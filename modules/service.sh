@@ -18,8 +18,8 @@
 
 # Wait Boot to Complete
 while [ -z "$(getprop sys.boot_completed)" ]; do
-	sleep 30
+	sleep 40
 done
 
-# Initiate Zirelia
-zirelia
+# Initiate 
+sys.zirelia.monitorservice

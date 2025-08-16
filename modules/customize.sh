@@ -1,5 +1,3 @@
-#!/system/bin/sh
-
 #
 # Copyright (C) 2024-2025 Zexshia
 #
@@ -16,11 +14,6 @@
 # limitations under the License.
 #
 
-# Configuration flags
-SKIPMOUNT=false
-PROPFILE=false
-POSTFSDATA=false
-LATESTARTSERVICE=true
 
 # Get module version and author from module.prop
 MODVER=$(grep "^version=" "$MODPATH/module.prop" | cut -d '=' -f2)
@@ -33,7 +26,7 @@ REPLACE=""
 
 # Display banner
 ui_print ""
-ui_print "              AZenith Zirelia             "
+ui_print "              Konyaku Tweaks             "
 ui_print ""
 ui_print "- Build Date    : 22/06/2025"
 ui_print "- Author        : ${AUTHOR}"
@@ -49,11 +42,11 @@ if [ ! -d /data/adb/modules/encore ]; then
   else
   ui_print "- Encore is installed"
 fi
-ui_print "- Installing Zirelia..."
+ui_print "- Installing..."
 
 # Extracting module files
 ui_print "- Creating module directories..."
-mkdir -p /data/adb/.config/zirelia
+mkdir -p /data/adb/.config/konyaku
 ui_print "- Extracting system directories..."
 extract -o "$ZIPFILE" 'system/*' -d "$MODPATH" >&2
 ui_print "- Extracting service.sh..."
@@ -66,35 +59,6 @@ checkpath() {
     fi
     return 1  
 }
-
-# List of paths
-bypasslist="
-/sys/devices/platform/charger/bypass_charger
-/sys/devices/platform/charger/tran_aichg_disable_charger
-/proc/mtk_battery_cmd/current_cmd
-/sys/devices/platform/mt-battery/disable_charger
-"
-
-ui_print "- Checking Bypass compatibility..."
-bypasspath=""
-for path in $bypasslist; do
-    if checkpath "$path"; then
-        bypasspath="$path"
-        break 
-    fi
-done
-
-# Fallback to nb html if bypass unsupported
-if [ -z "$bypasspath" ]; then
-    ui_print "- Skip installing bypasscharge..."
-    mv "$MODPATH/assets/indexnbhtml" "$MODPATH/webroot/index.html"
-    mv "$MODPATH/assets/qs738danbjs" "$MODPATH/webroot/qs738da.js"
-    else
-    ui_print "- start installing bypasscharge addon"
-    ui_print "- path: $path"
-    mv "$MODPATH/assets/indexbphtml" "$MODPATH/webroot/index.html"
-    mv "$MODPATH/assets/qs738dabpjs" "$MODPATH/webroot/qs738da.js"
-fi
 
 # Installing toast
 if pm list packages | grep -q bellavita.toast; then
